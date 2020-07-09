@@ -27,30 +27,56 @@ GLOBAL OPTIONS:
    --version, -v  print the version (default: false)
 ```
 
-## config file template
+## Example
 
+create table:
+```MySQL
+CREATE TABLE `logs` (
+  `id` BIGINT(21) NOT NULL AUTO_INCREMENT,
+  `yearweek` INT(11) NOT NULL,
+  `user_id` BIGINT(21) NOT NULL,
+  `message` TEXT NOT NULL,
+  `created_at` BIGINT(21) NOT NULL,
+  PRIMARY KEY (`id`, `yearweek`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+PARTITION BY RANGE(yearweek) (
+      PARTITION p202024 VALUES LESS THAN (202024),
+      PARTITION p202025 VALUES LESS THAN (202025)
+);
 ```
-./mspm config-template
+
+setup config:
+```bash
+cat > myconfig.json
 {
-        "database": "template",
-        "database_dsn": "username:password@protocol(address)/dbname?param=value",
+        "database": "mydatabase",
+        "database_dsn": "username:password@protocol(address)/mydatabase",
         "tables": [
                 {
-                        "name": "x",
+                        "name": "logs",
                         "partition_schema": "yearweek",
                         "retention": 5,
                         "max_future_partitions": 5
-                },
-                {
-                        "name": "y",
-                        "partition_schema": "yearweek",
-                        "retention": 2,
-                        "max_future_partitions": 1
                 }
         ]
 }
 ```
 
+run update:
+```bash
+./mspm update-partitions -c myconfig.json
+Partitions to add to the logs table [202029 202030 202031 202032]
++-------+----------------+----------------------+-----------------------+----------------+-----------------------+-----------------+-------------------+---------+
+| TABLE | PARTITION NAME | PARTITION EXPRESSION | PARTITION DESCRIPTION | NUMBER OF ROWS | AVERAGE ROW SIZE (MB) | INDEX SIZE (MB) | STORAGE SIZE (MB) | COMMENT |
++-------+----------------+----------------------+-----------------------+----------------+-----------------------+-----------------+-------------------+---------+
+| logs  | p202024        | yearweek             |                202024 |              0 |                     0 |               0 |          0.015625 |         |
+| logs  | p202025        | yearweek             |                202025 |              0 |                     0 |               0 |          0.015625 |         |
+| logs  | p202029        | yearweek             |                202029 |              0 |                     0 |               0 |          0.015625 |         |
+| logs  | p202030        | yearweek             |                202030 |              0 |                     0 |               0 |          0.015625 |         |
+| logs  | p202031        | yearweek             |                202031 |              0 |                     0 |               0 |          0.015625 |         |
+| logs  | p202032        | yearweek             |                202032 |              0 |                     0 |               0 |          0.015625 |         |
++-------+----------------+----------------------+-----------------------+----------------+-----------------------+-----------------+-------------------+---------+
+```
+
 ### TODOs
 * Support more range types like yearmonth
-
