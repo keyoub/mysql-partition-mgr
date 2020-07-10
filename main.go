@@ -23,6 +23,11 @@ var appCommands = []*cli.Command{
 		Action: template,
 	},
 	{
+		Name:   "yearweek",
+		Usage:  "outputs the current yearweek value",
+		Action: yearweek,
+	},
+	{
 		Name:   "validate-config",
 		Usage:  "validate your configuration file",
 		Action: config,
@@ -46,7 +51,7 @@ func main() {
 	app := &cli.App{
 		Name:    "spm",
 		Usage:   "MySQL partition manager",
-		Version: "0.0.1",
+		Version: "1.0.0",
 		Authors: []*cli.Author{
 			{Name: "Bardia Keyoumarsi", Email: "bardia@keyoumarsi.com"},
 		},

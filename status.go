@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/jedib0t/go-pretty/table"
 	"github.com/urfave/cli/v2"
@@ -70,4 +72,11 @@ func status(c *cli.Context) (err error) {
 	defer db.Close()
 
 	return printStatus(db, conf)
+}
+
+func yearweek(_ *cli.Context) error {
+	now := time.Now()
+	yw := determineYearWeek(now)
+	fmt.Fprintf(os.Stdout, "%d is the yearweek for %s\n", yw, now.Format(time.UnixDate))
+	return nil
 }

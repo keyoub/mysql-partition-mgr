@@ -27,6 +27,14 @@ GLOBAL OPTIONS:
    --version, -v  print the version (default: false)
 ```
 
+## Installation
+
+```bash
+git clone github.com/qeubar/mysql-partition-mgr
+cd mysql-partition-mgr/
+go install
+```
+
 ## Example
 
 create table:
@@ -80,3 +88,4 @@ Partitions to add to the logs table [202029 202030 202031 202032]
 
 ### TODOs
 * Support more range types like yearmonth
+* Publish binary to select distros

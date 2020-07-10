@@ -12,14 +12,14 @@ import (
 )
 
 type Partition struct {
-	Name             string // p202030
-	Expression       string // yearweek
-	Description      int    // 202030
-	TableRows        int    // 0
-	AvgRowLength     int    // 0
-	DataLength       int64  // 16384
-	IndexLength      int64  // 16384
-	PartitionComment string //
+	Name             string
+	Expression       string
+	Description      int
+	TableRows        int
+	AvgRowLength     int
+	DataLength       int64
+	IndexLength      int64
+	PartitionComment string
 }
 
 // determineYearWeek returns a YYYYWW integer.
