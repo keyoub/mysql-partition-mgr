@@ -10,13 +10,14 @@ USAGE:
    mspm [global options] command [command options] [arguments...]
 
 VERSION:
-   0.0.1
+   1.0.0
 
 AUTHOR:
    Bardia Keyoumarsi <bardia@keyoumarsi.com>
 
 COMMANDS:
    config-template    outputs a config file template
+   yearweek           outputs the current yearweek value
    validate-config    validate your configuration file
    status             status of current partitioned tables
    update-partitions  update database partitions based on given configuration
