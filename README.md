@@ -4,7 +4,7 @@ The `mspm` (MySQL Partition Manager) can be used to manage existing yearweek ran
 
 ```
 NAME:
-   spm - MySQL partition manager
+   mspm - MySQL partition manager
 
 USAGE:
    mspm [global options] command [command options] [arguments...]
