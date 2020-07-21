@@ -1,5 +1,6 @@
 mspm
 spm
+sqlpart
 
 # Binaries, plugins, libs
 *.dll

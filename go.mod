@@ -1,4 +1,4 @@
-module mspm
+module sqlpart
 
 go 1.13
 

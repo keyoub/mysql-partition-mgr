@@ -49,7 +49,7 @@ var appCommands = []*cli.Command{
 
 func main() {
 	app := &cli.App{
-		Name:    "mspm",
+		Name:    "sqlpart",
 		Usage:   "MySQL partition manager",
 		Version: "1.0.0",
 		Authors: []*cli.Author{

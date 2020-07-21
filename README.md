@@ -1,13 +1,15 @@
 # MySQL Partition Manager
 
-The `mspm` (MySQL Partition Manager) can be used to manage existing yearweek range paritioned MySQL tables.
+[![Build Status](https://travis-ci.com/qeubar/mysql-partition-mgr.svg?branch=master)](https://travis-ci.com/qeubar/mysql-partition-mgr)
+
+The `sqlpart` (MySQL Partition Manager) can be used to manage existing yearweek range paritioned MySQL tables.
 
 ```
 NAME:
-   mspm - MySQL partition manager
+   sqlpart - MySQL partition manager
 
 USAGE:
-   mspm [global options] command [command options] [arguments...]
+   sqlpart [global options] command [command options] [arguments...]
 
 VERSION:
    1.0.0
@@ -73,7 +75,7 @@ cat > myconfig.json
 
 run update:
 ```bash
-./mspm update-partitions -c myconfig.json
+sqlpart update-partitions -c myconfig.json
 Partitions to add to the logs table [202029 202030 202031 202032]
 +-------+----------------+----------------------+-----------------------+----------------+-----------------------+-----------------+-------------------+---------+
 | TABLE | PARTITION NAME | PARTITION EXPRESSION | PARTITION DESCRIPTION | NUMBER OF ROWS | AVERAGE ROW SIZE (MB) | INDEX SIZE (MB) | STORAGE SIZE (MB) | COMMENT |
