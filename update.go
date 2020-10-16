@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -10,25 +9,20 @@ import (
 )
 
 func update(c *cli.Context) error {
-	conf, err := loadAndValidateConfig(c.String("config"))
+	conf, err := loadAndValidateConfig(c)
 	if err != nil {
 		return err
 	}
-
-	db, err := connectDB(conf.DatabaseDSN)
-	if err != nil {
-		return errors.New("Failed to establish connection with SQL database: " + err.Error())
-	}
-	defer db.Close()
+	defer conf.db.Close()
 
 	for _, table := range conf.Tables {
-		err = updatePartitions(db, conf.Database, table, time.Now())
+		err = updatePartitions(conf.db, conf.Database, table, time.Now())
 		if err != nil {
 			fmt.Fprintln(os.Stdout, err.Error())
 		}
 	}
 
-	printStatus(db, conf)
+	printStatus(conf)
 
 	return nil
 }

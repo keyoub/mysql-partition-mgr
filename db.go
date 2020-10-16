@@ -143,7 +143,7 @@ func updatePartitions(dbh *sql.DB, dbName string, table Table, now time.Time) er
 	if mfp < 1 {
 		mfp = 4 // default to 3 future partitions
 	}
-	for i := 1; i < mfp; i++ {
+	for i := 0; i < mfp; i++ {
 		partitionsToAdd = append(partitionsToAdd, determineYearWeek(now.AddDate(0, 0, i*7)))
 	}
 

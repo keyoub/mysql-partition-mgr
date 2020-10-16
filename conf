@@ -1,0 +1,17 @@
+{
+	"tables": [
+		{
+			"name": "apv_shipments",
+			"partition_schema": "yearweek",
+			"retention": 5,
+			"max_future_partitions": 5
+		},
+		{
+			"name": "adjusted_rates",
+			"partition_schema": "yearweek",
+			"retention": 2,
+			"max_future_partitions": 1
+		}
+	]
+}
+

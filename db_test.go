@@ -49,6 +49,7 @@ func TestUpdatePartitionsNoNewPartitions(t *testing.T) {
 	rows := sqlmock.NewRows([]string{"PARTITION_NAME", "PARTITION_EXPRESSION", "PARTITION_DESCRIPTION", "TABLE_ROWS", "AVG_ROW_LENGTH", "DATA_LENGTH", "INDEX_LENGTH", "PARTITION_COMMENT"}).
 		AddRow("p202001", "", "202001", 0, 0, 0, 0, "").
 		AddRow("p202002", "", "202002", 0, 0, 0, 0, "").
+		AddRow("p202025", "", "202025", 0, 0, 0, 0, "").
 		AddRow("p202026", "", "202026", 0, 0, 0, 0, "").
 		AddRow("p202027", "", "202027", 0, 0, 0, 0, "").
 		AddRow("p202028", "", "202028", 0, 0, 0, 0, "")

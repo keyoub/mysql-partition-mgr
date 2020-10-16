@@ -18,12 +18,12 @@ AUTHOR:
    Bardia Keyoumarsi <bardia@keyoumarsi.com>
 
 COMMANDS:
-   config-template    outputs a config file template
-   yearweek           outputs the current yearweek value
-   validate-config    validate your configuration file
-   status             status of current partitioned tables
-   update-partitions  update database partitions based on given configuration
-   help, h            Shows a list of commands or help for one command
+   template  outputs a config file template
+   yearweek  outputs the current yearweek value
+   validate  validate your configuration file
+   status    status of current partitioned tables
+   update    update database partitions based on given configuration
+   help, h   Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --help, -h     show help (default: false)
@@ -60,8 +60,6 @@ setup config:
 ```bash
 cat > myconfig.json
 {
-        "database": "mydatabase",
-        "database_dsn": "username:password@protocol(address)/mydatabase",
         "tables": [
                 {
                         "name": "logs",
@@ -75,7 +73,7 @@ cat > myconfig.json
 
 run update:
 ```bash
-sqlpart update-partitions -c myconfig.json
+sqlpart update -c myconfig.json
 Partitions to add to the logs table [202029 202030 202031 202032]
 +-------+----------------+----------------------+-----------------------+----------------+-----------------------+-----------------+-------------------+---------+
 | TABLE | PARTITION NAME | PARTITION EXPRESSION | PARTITION DESCRIPTION | NUMBER OF ROWS | AVERAGE ROW SIZE (MB) | INDEX SIZE (MB) | STORAGE SIZE (MB) | COMMENT |
@@ -91,4 +89,3 @@ Partitions to add to the logs table [202029 202030 202031 202032]
 
 ### TODOs
 * Support more range types like yearmonth
-* Publish binary to select distros

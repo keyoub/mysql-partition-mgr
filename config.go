@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,8 +12,6 @@ import (
 )
 
 const configTemplate = `{
-	"database": "template",
-	"database_dsn": "username:password@protocol(address)/dbname?param=value",
 	"tables": [
 		{
 			"name": "x",
@@ -31,9 +30,11 @@ const configTemplate = `{
 `
 
 type Config struct {
-	Database    string  `json:"database"`
-	DatabaseDSN string  `json:"database_dsn"`
+	Database    string
+	DatabaseDSN string
 	Tables      []Table `json:"tables"`
+
+	db *sql.DB
 }
 
 type Table struct {
@@ -48,8 +49,8 @@ func template(_ *cli.Context) error {
 	return nil
 }
 
-func config(c *cli.Context) (err error) {
-	_, err = loadAndValidateConfig(c.String("config"))
+func config(ctx *cli.Context) (err error) {
+	_, err = loadAndValidateConfig(ctx)
 	if err == nil {
 		// don't leave the user hanging
 		fmt.Fprintln(os.Stdout, "Configuration is valid!")
@@ -57,39 +58,43 @@ func config(c *cli.Context) (err error) {
 	return
 }
 
-func loadAndValidateConfig(filePath string) (c *Config, err error) {
-	configBytes, err := ioutil.ReadFile(filePath)
+func loadAndValidateConfig(ctx *cli.Context) (*Config, error) {
+	c := Config{
+		Database:    ctx.String("database"),
+		DatabaseDSN: ctx.String("database-dsn"),
+	}
+
+	configBytes, err := ioutil.ReadFile(ctx.String("config"))
 	if err != nil {
 		err = errors.New("Unable to load config file: " + err.Error())
-		return
+		return nil, err
 	}
 
 	err = json.Unmarshal(configBytes, &c)
 	if err != nil {
 		err = errors.New("Unable to parse config file: " + err.Error())
-		return
+		return nil, err
 	}
 
-	db, err := connectDB(c.DatabaseDSN)
+	c.db, err = connectDB(c.DatabaseDSN)
 	if err != nil {
 		err = errors.New("Failed to establish connection with SQL database: " + err.Error())
-		return
+		return nil, err
 	}
-	defer db.Close()
 
-	err = db.Ping()
+	err = c.db.Ping()
 	if err != nil {
 		err = errors.New("Failed to ping SQL database: " + err.Error())
-		return
+		return nil, err
 	}
 
 	for _, table := range c.Tables {
-		err = verifyTable(db, c.Database, table.Name, table.PartitionSchema)
+		err = verifyTable(c.db, c.Database, table.Name, table.PartitionSchema)
 		if err != nil {
 			err = errors.New("Failed to verify table " + table.Name + ": " + err.Error())
-			return
+			return nil, err
 		}
 	}
 
-	return
+	return &c, nil
 }

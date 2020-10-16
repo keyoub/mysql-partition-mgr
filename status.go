@@ -1,8 +1,6 @@
 package main
 
 import (
-	"database/sql"
-	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -11,10 +9,10 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func printStatus(db *sql.DB, conf *Config) error {
+func printStatus(conf *Config) error {
 	status := make(map[string][]Partition)
 	for _, table := range conf.Tables {
-		p, err := getCurrPartitions(db, conf.Database, table.Name)
+		p, err := getCurrPartitions(conf.db, conf.Database, table.Name)
 		if err != nil {
 			return err
 		}
@@ -59,19 +57,12 @@ func printStatus(db *sql.DB, conf *Config) error {
 }
 
 func status(c *cli.Context) (err error) {
-	conf, err := loadAndValidateConfig(c.String("config"))
+	conf, err := loadAndValidateConfig(c)
 	if err != nil {
 		return
 	}
 
-	db, err := connectDB(conf.DatabaseDSN)
-	if err != nil {
-		err = errors.New("Failed to establish connection with SQL database: " + err.Error())
-		return
-	}
-	defer db.Close()
-
-	return printStatus(db, conf)
+	return printStatus(conf)
 }
 
 func yearweek(_ *cli.Context) error {

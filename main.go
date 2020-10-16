@@ -14,11 +14,25 @@ var defaultFlags = []cli.Flag{
 		Usage:    "configuration file",
 		Required: true,
 	},
+	&cli.StringFlag{
+		Name:     "database",
+		Aliases:  []string{"db"},
+		Usage:    "database name",
+		Required: true,
+		EnvVars:  []string{"DATABASE"},
+	},
+	&cli.StringFlag{
+		Name:     "database-dsn",
+		Aliases:  []string{"dsn"},
+		Usage:    "database dsn",
+		Required: true,
+		EnvVars:  []string{"DATABASE_DSN"},
+	},
 }
 
 var appCommands = []*cli.Command{
 	{
-		Name:   "config-template",
+		Name:   "template",
 		Usage:  "outputs a config file template",
 		Action: template,
 	},
@@ -28,7 +42,7 @@ var appCommands = []*cli.Command{
 		Action: yearweek,
 	},
 	{
-		Name:   "validate-config",
+		Name:   "validate",
 		Usage:  "validate your configuration file",
 		Action: config,
 		Flags:  defaultFlags,
@@ -40,7 +54,7 @@ var appCommands = []*cli.Command{
 		Flags:  defaultFlags,
 	},
 	{
-		Name:   "update-partitions",
+		Name:   "update",
 		Usage:  "update database partitions based on given configuration",
 		Action: update,
 		Flags:  defaultFlags,
